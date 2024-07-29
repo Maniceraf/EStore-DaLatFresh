@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5D6F8561-5C81-443D-8A06-AB72B70A5F99}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{D8A533B5-E6DE-4410-83FF-1AC4B9D5C779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore", "src\WebApps\WebStore\WebStore.csproj", "{DA227560-3852-446C-89DD-F119F0C8E741}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA227560-3852-446C-89DD-F119F0C8E741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA227560-3852-446C-89DD-F119F0C8E741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA227560-3852-446C-89DD-F119F0C8E741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA227560-3852-446C-89DD-F119F0C8E741}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8A533B5-E6DE-4410-83FF-1AC4B9D5C779} = {5D6F8561-5C81-443D-8A06-AB72B70A5F99}
+		{DA227560-3852-446C-89DD-F119F0C8E741} = {D8A533B5-E6DE-4410-83FF-1AC4B9D5C779}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DDE84D4-5755-4CD0-AAC5-2F66A701C3D1}
+	EndGlobalSection
+EndGlobal
