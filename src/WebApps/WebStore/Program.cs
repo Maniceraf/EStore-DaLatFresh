@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using WebStore.Data;
+
 namespace WebStore
 {
     public class Program
@@ -8,6 +11,9 @@ namespace WebStore
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.AddBusinessService();
+            builder.AddRepositories();
 
             var app = builder.Build();
 
@@ -28,7 +34,7 @@ namespace WebStore
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Store}/{action=Index}/{id?}");
 
             app.Run();
         }
