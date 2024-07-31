@@ -6,13 +6,13 @@
 	<div class="col-md-6 col-lg-6 col-xl-4">
 		<div class="rounded position-relative fruite-item">
 			<div class="fruite-img" style="height:65%">
-				<a asp-action="Detail" asp-controller="HangHoa" asp-route-id="@item.Id">
+				<a asp-action="Detail" asp-controller="Store" asp-route-id="@item.Id">
 					<img src="@item.PreviewImage" class="w-100 rounded-top" alt="@item.Name" style="height:100%">
 				</a>
 			</div>
 			<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.Category</div>
 			<div class="p-4 border border-secondary border-top-0 rounded-bottom" style="height:35%">
-				<a asp-action="Detail" asp-controller="HangHoa" asp-route-id="@item.Id"><h4>@item.Name</h4></a>
+				<a asp-action="Detail" asp-controller="Store" asp-route-id="@item.Id"><h4>@item.Name</h4></a>
 				<p>@item.Description</p>
 				<div class="d-flex justify-content-between flex-lg-wrap">
 					<p class="text-dark fs-5 fw-bold mb-0">$@item.Price</p>

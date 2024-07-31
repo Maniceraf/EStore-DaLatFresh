@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Entities;
+using WebStore.ViewModels;
 
 namespace WebStore.Data;
 
@@ -92,4 +93,8 @@ public partial class ApplicationDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<WebStore.ViewModels.ProductDetailViewModel> ProductDetailViewModel { get; set; } = default!;
+
+public DbSet<WebStore.ViewModels.ProductViewModel> ProductViewModel { get; set; } = default!;
 }
