@@ -41,9 +41,10 @@ namespace WebStore
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
+            app.MapAreaControllerRoute(
                 name: "default",
-                pattern: "{controller=Store}/{action=Index}/{id?}");
+                areaName: "Portal",
+                pattern: "{controller=Products}/{action=Index}/{id?}");
 
             app.Run();
         }

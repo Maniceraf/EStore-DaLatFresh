@@ -1,0 +1,91 @@
+﻿@model IEnumerable<WebStore.Entities.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info mb-4" id="example2_info" role="status" aria-live="polite">Showing @Model.Count() entries</div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info" style="text-align: center">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%;">
+                                            Name
+                                        </th>
+                                        <th style="width: 10%;">
+                                            Preview Image
+                                        </th>
+                                        <th style="width: 10%;">
+                                            Price
+                                        </th>
+                                        <th style="width: 10%;">
+                                            Discount
+                                        </th>
+                                        <th style="width: 10%;">
+                                            ViewCounts
+                                        </th>
+                                        <th style="width: 10%;">
+                                            Category
+                                        </th>
+                                        <th style="width: 10%;">
+                                            Vendor
+                                        </th>
+                                        <th style="width: 10%;">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="width: 30%;">
+                                                @item.Name
+                                            </td>
+                                            <td style="width: 10%;">
+                                                <img src="@item.PreviewImage" alt="@item.Name" height="100" width="100" />
+                                            </td>
+                                            <td style="width: 10%;">
+                                                @item.Price
+                                            </td>
+                                            <td style="width: 10%;">
+                                                @item.Discount
+                                            </td>
+                                            <td style="width: 10%;">
+                                                @item.ViewCounts
+                                            </td>
+                                            <td style="width: 10%;">
+                                                @item.Category.Name
+                                            </td>
+                                            <td style="width: 10%;">
+                                                @item.Vendor.Name
+                                            </td>
+                                            <td style="width: 10%;">
+                                                <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn bg-info btn-sm"><i class="fas fa-edit"></i></a>
+                                                <a asp-action="Details" asp-route-id="@item.Id" type="button" class="btn bg-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn bg-warning btn-sm"><i class="far fa-file-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
