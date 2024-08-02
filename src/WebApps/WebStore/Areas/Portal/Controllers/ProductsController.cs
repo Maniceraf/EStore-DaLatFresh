@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebStore.Entities;
 using WebStore.Interfaces;
 
+
 namespace WebStore.Areas.Portal.Controllers
 {
     [Route("portal-products")]
@@ -16,10 +17,9 @@ namespace WebStore.Areas.Portal.Controllers
 			_unitOfWork = unitOfWork;
         }
 
-		public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var products = await _unitOfWork.ProductRepository.GetAllAsync();
-            ViewData["menu"] = "Products";
             return View(products);
         }
 
@@ -40,18 +40,23 @@ namespace WebStore.Areas.Portal.Controllers
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             var vendors = await _unitOfWork.VendorRepository.GetAllAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Id");
-            ViewData["VendorId"] = new SelectList(vendors, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
+            ViewData["VendorId"] = new SelectList(vendors, "Id", "Name");
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Alias,UnitDescription,Price,PreviewImage,ProductionDateOnLocal,ProductionDateOnUtc,Discount,ViewCounts,Description,CreatedOnLocal,CreatedOnUtc,UpdatedOnLocal,UpdatedOnUtc,CategoryId,VendorId")] Product product)
+        public async Task<IActionResult> Create([Bind("Name,Alias,UnitDescription,Price,Discount,PreviewImage,Description,CategoryId,VendorId")] Product product)
         {
             if (ModelState.IsValid)
             {
+                product.CreatedOnLocal = DateTime.Now;
+                product.CreatedOnUtc = DateTime.UtcNow;
+                product.ProductionDateOnLocal = DateTime.Now;
+                product.ProductionDateOnUtc = DateTime.UtcNow;
+
                 await _unitOfWork.ProductRepository.CreateAsync(product);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -60,8 +65,8 @@ namespace WebStore.Areas.Portal.Controllers
 
 			var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
 			var vendors = await _unitOfWork.VendorRepository.GetAllAsync();
-			ViewData["CategoryId"] = new SelectList(categories, "Id", "Id");
-			ViewData["VendorId"] = new SelectList(vendors, "Id", "Id");
+			ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
+			ViewData["VendorId"] = new SelectList(vendors, "Id", "Name");
 
 			return View(product);
         }
