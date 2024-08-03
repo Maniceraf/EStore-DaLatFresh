@@ -52,10 +52,7 @@ namespace WebStore.Areas.Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                product.CreatedOnLocal = DateTime.Now;
                 product.CreatedOnUtc = DateTime.UtcNow;
-                product.ProductionDateOnLocal = DateTime.Now;
-                product.ProductionDateOnUtc = DateTime.UtcNow;
 
                 await _unitOfWork.ProductRepository.CreateAsync(product);
                 await _unitOfWork.SaveChangesAsync();

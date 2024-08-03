@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Entities;
-using WebStore.ViewModels;
 
 namespace WebStore.Data;
 
@@ -21,6 +20,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductType> ProductTypes { get; set; }
+
     public virtual DbSet<Vendor> Vendors { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,70 +32,74 @@ public partial class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC0792556493");
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07F255397A");
 
             entity.ToTable("Category");
 
             entity.Property(e => e.Alias).HasMaxLength(50);
-            entity.Property(e => e.CreatedOnLocal).HasColumnType("datetime");
             entity.Property(e => e.CreatedOnUtc).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.PreviewImage).IsUnicode(false);
-            entity.Property(e => e.UpdatedOnLocal).HasColumnType("datetime");
             entity.Property(e => e.UpdatedOnUtc).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07B4B207A1");
+            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07CBB26F95");
 
             entity.ToTable("Product");
 
             entity.Property(e => e.Alias).HasMaxLength(50);
-            entity.Property(e => e.CreatedOnLocal).HasColumnType("datetime");
             entity.Property(e => e.CreatedOnUtc).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.ProductionDateOnLocal).HasColumnType("datetime");
-            entity.Property(e => e.ProductionDateOnUtc).HasColumnType("datetime");
             entity.Property(e => e.UnitDescription).HasMaxLength(50);
-            entity.Property(e => e.UpdatedOnLocal).HasColumnType("datetime");
             entity.Property(e => e.UpdatedOnUtc).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.Products)
-                .HasForeignKey(d => d.CategoryId)
+            entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
+                .HasForeignKey(d => d.ProductTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product__Categor__2E1BDC42");
+                .HasConstraintName("FK__Product__Product__693CA210");
 
             entity.HasOne(d => d.Vendor).WithMany(p => p.Products)
                 .HasForeignKey(d => d.VendorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product__VendorI__2F10007B");
+                .HasConstraintName("FK__Product__VendorI__6A30C649");
+        });
+
+        modelBuilder.Entity<ProductType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductT__3214EC079E42BE75");
+
+            entity.ToTable("ProductType");
+
+            entity.Property(e => e.Alias).HasMaxLength(50);
+            entity.Property(e => e.CreatedOnUtc).HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.UpdatedOnUtc).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.ProductTypes)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductTy__Categ__60A75C0F");
         });
 
         modelBuilder.Entity<Vendor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Vendor__3214EC0708707E4E");
+            entity.HasKey(e => e.Id).HasName("PK__Vendor__3214EC0788BB4114");
 
             entity.ToTable("Vendor");
 
             entity.Property(e => e.Address).HasMaxLength(50);
-            entity.Property(e => e.ContactPerson).HasMaxLength(50);
+            entity.Property(e => e.CreatedOnUtc).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.Logo)
-                .HasMaxLength(50)
-                .IsUnicode(false);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.UpdatedOnUtc).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<WebStore.ViewModels.ProductDetailViewModel> ProductDetailViewModel { get; set; } = default!;
-
-public DbSet<WebStore.ViewModels.ProductViewModel> ProductViewModel { get; set; } = default!;
 }

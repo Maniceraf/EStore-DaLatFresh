@@ -17,7 +17,7 @@ namespace WebStore.NewFolder
 			{
 				Id = x.Id,
 				Name = x.Name,
-				Count = x.Products.Count
+				Count = x.ProductTypes.SelectMany(x => x.Products).Count()
 			}).OrderBy(p => p.Id);
 
 			return View(result);

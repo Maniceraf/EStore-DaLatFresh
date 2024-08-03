@@ -29,7 +29,7 @@ namespace WebStore.Controllers
                 Price = p.Price ?? 0,
                 PreviewImage = p.PreviewImage ?? "",
                 Description = p.UnitDescription ?? "",
-                Category = p.Category.Name
+                Category = p.ProductType.Name
             });
 
             return View(result);
@@ -52,7 +52,7 @@ namespace WebStore.Controllers
 				Description = data.Description ?? string.Empty,
 				PreviewImage = data.PreviewImage ?? string.Empty,
 				ShortDescription = data.UnitDescription ?? string.Empty,
-				Category = data.Category.Name,
+				Category = data.ProductType.Name,
 				RemainsCount = 10,//tính sau
 				Rate = 5,//check sau
 			};
@@ -75,7 +75,7 @@ namespace WebStore.Controllers
 				Price = p.Price ?? 0,
 				PreviewImage = p.PreviewImage ?? "",
 				Description = p.UnitDescription ?? "",
-				Category = p.Category.Name
+				Category = p.ProductType.Name
 			});
 
 			return View(result);

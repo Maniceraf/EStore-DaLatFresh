@@ -11,5 +11,6 @@ namespace WebStore.Interfaces
         ICategoryRepository CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
         IVendorRepository VendorRepository { get; }
+        IProductTypeRepository ProductTypeRepository { get; }
     }
 }

@@ -33,6 +33,22 @@ namespace WebStore.Areas.Portal.ValueObjects
                     IsActive = menuItem == "Categories",
                     Childrens = []
                 },
+                new() {
+                    Action = "Index",
+                    Controller = "ProductTypes",
+                    Name = "Product Types",
+                    Icon = "fas fas fa-table",
+                    IsActive = menuItem == "ProductTypes",
+                    Childrens = []
+                },
+                new() {
+                    Action = "Index",
+                    Controller = "Vendors",
+                    Name = "Vendors",
+                    Icon = "fas fas fa-table",
+                    IsActive = menuItem == "Vendors",
+                    Childrens = []
+                },
             ];
         }
     }

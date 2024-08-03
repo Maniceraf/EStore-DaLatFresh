@@ -11,17 +11,20 @@ namespace WebStore.Implements
         public ICategoryRepository CategoryRepository { get; }
         public IProductRepository ProductRepository { get; }
         public IVendorRepository VendorRepository { get; }
+        public IProductTypeRepository ProductTypeRepository { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
             ICategoryRepository categoryRepository,
             IProductRepository productRepository,
-            IVendorRepository vendorRepository)
+            IVendorRepository vendorRepository,
+            IProductTypeRepository productTypeRepository)
         {
             Context = context;
             CategoryRepository = categoryRepository;
             ProductRepository = productRepository;
             VendorRepository = vendorRepository;
+            ProductTypeRepository = productTypeRepository;
         }
 
         public async Task SaveChangesAsync()

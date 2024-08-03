@@ -18,7 +18,7 @@ namespace WebStore.Areas.Portal.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
-            var result = categories.OrderByDescending(x => x.Id);
+            var result = categories.OrderByDescending(x => x.CreatedOnUtc);
             return View(categories);
         }
 
@@ -53,8 +53,6 @@ namespace WebStore.Areas.Portal.Controllers
                     Name = model.Name,
                     Alias = model.Alias,
                     Description = model.Description,
-                    PreviewImage = string.Empty,
-                    CreatedOnLocal = DateTime.Now,
                     CreatedOnUtc = DateTime.UtcNow
                 };
 
@@ -102,7 +100,6 @@ namespace WebStore.Areas.Portal.Controllers
                 category.Name = model.Name;
                 category.Alias = model.Alias;
                 category.Description = model.Description;
-                category.UpdatedOnLocal = DateTime.Now;
                 category.UpdatedOnUtc = DateTime.UtcNow;
 
                 await _unitOfWork.CategoryRepository.UpdateAsync(category);

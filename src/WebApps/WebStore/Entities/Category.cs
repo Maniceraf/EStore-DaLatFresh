@@ -13,15 +13,9 @@ public partial class Category
 
     public string? Description { get; set; }
 
-    public string? PreviewImage { get; set; }
-
-    public DateTime CreatedOnLocal { get; set; }
-
     public DateTime CreatedOnUtc { get; set; }
-
-    public DateTime? UpdatedOnLocal { get; set; }
 
     public DateTime? UpdatedOnUtc { get; set; }
 
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public virtual ICollection<ProductType> ProductTypes { get; set; } = new List<ProductType>();
 }
