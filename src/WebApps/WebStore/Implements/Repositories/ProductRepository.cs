@@ -1,6 +1,5 @@
 ﻿using WebStore.Data;
 using WebStore.Entities;
-using WebStore.Interfaces;
 using WebStore.Interfaces.Repositories;
 
 namespace WebStore.Implements.Repositories

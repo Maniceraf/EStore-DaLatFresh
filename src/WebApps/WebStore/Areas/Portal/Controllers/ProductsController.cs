@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebStore.Areas.Portal.Models.Product;
 using WebStore.Entities;
 using WebStore.Interfaces;
 
@@ -17,13 +18,15 @@ namespace WebStore.Areas.Portal.Controllers
 			_unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = await _unitOfWork.ProductRepository.GetAllAsync();
             return View(products);
         }
 
-		[Route("{id}")]
+        [HttpGet]
+        [Route("{id}")]
 		public async Task<IActionResult> Details(int id)
         {
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
@@ -38,34 +41,57 @@ namespace WebStore.Areas.Portal.Controllers
 		[Route("create")]
 		public async Task<IActionResult> Create()
         {
-            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
+            var productTypes = await _unitOfWork.ProductTypeRepository.GetAllAsync();
             var vendors = await _unitOfWork.VendorRepository.GetAllAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
+            ViewData["ProductTypeId"] = new SelectList(productTypes, "Id", "Name");
             ViewData["VendorId"] = new SelectList(vendors, "Id", "Name");
 
             return View();
         }
 
         [HttpPost]
+        [Route("create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Alias,UnitDescription,Price,Discount,PreviewImage,Description,CategoryId,VendorId")] Product product)
+        public async Task<IActionResult> Create([Bind("Name,Alias,UnitDescription,Price,Discount,PreviewImage,Description,ProductTypeId,VendorId")] CreateProductRequestModel model)
         {
             if (ModelState.IsValid)
             {
-                product.CreatedOnUtc = DateTime.UtcNow;
+                var product = new Product
+                {
+                    Name = model.Name,
+                    Alias = model.Alias,
+                    Description = model.Description,
+                    UnitDescription = model.UnitDescription,
+                    PreviewImage = model.PreviewImage,
+                    Price = model.Price,
+                    Discount = model.Discount,
+                    ViewCounts = 0,
+                    CreatedOnUtc = DateTime.UtcNow,
+                    ProductTypeId = model.ProductTypeId,
+                    VendorId = model.VendorId
+                };
 
                 await _unitOfWork.ProductRepository.CreateAsync(product);
-                await _unitOfWork.SaveChangesAsync();
+
+                try
+                {
+                    await _unitOfWork.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    int a = 1;
+                }
 
                 return RedirectToAction(nameof(Index));
             }
 
-			var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
-			var vendors = await _unitOfWork.VendorRepository.GetAllAsync();
-			ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
-			ViewData["VendorId"] = new SelectList(vendors, "Id", "Name");
+            var productTypes = await _unitOfWork.ProductTypeRepository.GetAllAsync();
+            var vendors = await _unitOfWork.VendorRepository.GetAllAsync();
+            ViewData["ProductTypeId"] = new SelectList(productTypes, "Id", "Name");
+            ViewData["VendorId"] = new SelectList(vendors, "Id", "Name");
 
-			return View(product);
+			return View(model);
         }
 
 		[Route("{id}/edit")]
