@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebStore.Data;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Repositories;
 
@@ -12,7 +13,7 @@ namespace WebStore.Implements
         public IVendorRepository VendorRepository { get; }
 
         public UnitOfWork(
-            DbContext context,
+            ApplicationDbContext context,
             ICategoryRepository categoryRepository,
             IProductRepository productRepository,
             IVendorRepository vendorRepository)

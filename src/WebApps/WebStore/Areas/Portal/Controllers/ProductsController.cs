@@ -7,7 +7,7 @@ using WebStore.Interfaces;
 
 namespace WebStore.Areas.Portal.Controllers
 {
-    [Route("portal-products")]
+    [Route("portal/products")]
 	public class ProductsController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;

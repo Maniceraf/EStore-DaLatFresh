@@ -2,12 +2,11 @@
 
 namespace WebStore.Areas.Portal.Controllers
 {
-    [Route("portal-dashboard")]
+    [Route("portal/dashboard")]
     public class DashboardController : BaseController
     {
         public DashboardController()
         {
-            ViewData["menu"] = "Dashboard";
         }
 
         public IActionResult Index()

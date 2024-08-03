@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Portal\Models\" />
     <Folder Include="Implements\Services\" />
     <Folder Include="Interfaces\Services\" />
   </ItemGroup>

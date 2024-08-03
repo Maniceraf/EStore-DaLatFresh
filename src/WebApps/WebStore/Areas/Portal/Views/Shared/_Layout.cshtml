@@ -1,6 +1,6 @@
 ﻿
 @{
-    string menu = ViewData["menu"]?.ToString() ?? string.Empty;
+    string menuItem = ViewData["menu"]?.ToString() ?? string.Empty;
 }
 
 <!DOCTYPE html>
@@ -48,51 +48,32 @@
                         <a href="#" class="d-block">Hung Nguyen</a>
                     </div>
                 </div>
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a class="nav-link @(menu == "Dashboard" ? "active" : "")" asp-area="Portal" asp-controller="Dashboard" asp-action="Index">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(menu == "Products" ? "active" : "")" asp-area="Portal" asp-controller="Products" asp-action="Index">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Products
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                @await Component.InvokeAsync("PortalMenu", new { menuItem = menuItem })
             </div>
         </aside>
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-12">
-                            <ol class="breadcrumb float-sm-left">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">@menu</li>
-                            </ol>
+        <div class="content-wrapper p-2">
+            <div class="info-box" style="padding: 0px; height: 100%">
+                <div class="info-box-content">
+                    <div class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <ol class="breadcrumb float-sm-left">
+                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                        <li class="breadcrumb-item active">@menuItem</li>
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <section class="content">
+                        <div class="container-fluid">
+                            @RenderBody()
+                        </div>
+                    </section>
                 </div>
             </div>
-            <section class="content">
-                <div class="container-fluid">
-                    @RenderBody()
-                </div>
-            </section>
         </div>
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2024 <a href="#">DLF</a>.</strong>
-            All rights reserved.
-        </footer>
     </div>
     <script src="~/portal/plugins/jquery/jquery.min.js"></script>
     <script src="~/portal/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -107,7 +88,6 @@
     <script src="~/portal/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="~/portal/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="~/portal/dist/js/adminlte.js"></script>
-    <script src="~/portal/dist/js/demo.js"></script>
     <script src="~/portal/dist/js/pages/dashboard.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
