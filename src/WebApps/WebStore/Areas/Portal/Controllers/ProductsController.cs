@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Identity.Client.Extensions.Msal;
 using System.Globalization;
 using WebStore.Areas.Portal.Models.Product;
 using WebStore.Entities;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
-
 
 namespace WebStore.Areas.Portal.Controllers
 {
@@ -231,6 +229,13 @@ namespace WebStore.Areas.Portal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmDelete(int id)
         {
+            var images = await _unitOfWork.ProductImageRepository.GetImagesAsync(id);
+            foreach (var image in images)
+            {
+                await _firebaseStorageService.DeleteFileAsync(image.Name);
+            }
+            await _unitOfWork.ProductImageRepository.DeleteRangeAsync(images);
+
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
             if (product != null)
             {
@@ -239,7 +244,6 @@ namespace WebStore.Areas.Portal.Controllers
 
             await _unitOfWork.SaveChangesAsync();
 
-            await _firebaseStorageService.DeleteFileAsync(product.PreviewImage);
 
             return RedirectToAction(nameof(Index));
         }
