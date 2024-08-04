@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebStore.Attributes
+namespace WebStore.Attributes.ActionFilterAttributes
 {
     public class SetMenuAttribute : ActionFilterAttribute
     {

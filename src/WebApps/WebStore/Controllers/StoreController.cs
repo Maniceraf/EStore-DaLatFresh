@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
@@ -7,35 +8,50 @@ namespace WebStore.Controllers
     public class StoreController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+		private readonly IFirebaseStorageService _firebaseStorageService;
 
-        public StoreController(IUnitOfWork unitOfWork)
+        public StoreController(IUnitOfWork unitOfWork, IFirebaseStorageService firebaseStorageService)
         {
             _unitOfWork = unitOfWork;
+			_firebaseStorageService = firebaseStorageService;
         }
 
-        public IActionResult Index(int? categoryId)
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+		[HttpGet]
+		[Route("products")]
+        public IActionResult Products(List<int> categoryId, List<int> vendorId)
         {
             var products = _unitOfWork.ProductRepository.GetAll();
 
-            if (categoryId.HasValue)
+            if (categoryId.Count > 0)
             {
-                products = products.Where(p => p.Id == categoryId.Value).ToList();
+                products = products.Where(p => 
+					categoryId.Contains(p.ProductType.CategoryId)
+					&& vendorId.Contains(p.VendorId)).ToList();
             }
 
-            var result = products.Select(p => new ProductViewModel
+            var result = products.OrderByDescending(x => x.CreatedOnUtc).Select(x =>
             {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price ?? 0,
-                PreviewImage = p.PreviewImage ?? "",
-                Description = p.UnitDescription ?? "",
-                Category = p.ProductType.Name
+                var a = _firebaseStorageService.GetSignedUrlAsync(x.PreviewImage ?? string.Empty).Result;
+                return new ProductViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price ?? 0,
+                    PreviewImage = a ?? "",
+                    Description = x.UnitDescription ?? "",
+                    Category = x.ProductType.Name
+                };
             });
 
             return View(result);
         }
 
-		public IActionResult Detail(int id)
+        public IActionResult Detail(int id)
 		{
 			var data = _unitOfWork.ProductRepository.GetById(id);
 			if (data == null)

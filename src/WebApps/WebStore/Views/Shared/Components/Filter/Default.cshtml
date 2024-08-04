@@ -1,0 +1,26 @@
+﻿@model WebStore.ViewModels.FilterViewModel
+
+<div class="col-lg-12">
+	<div class="mb-3" id="categories">
+		<h4>Danh mục</h4>
+		@foreach(var item in Model.Categories)
+		{
+			<div class="mb-2">
+				<input type="checkbox" class="me-2" name="categoryId" value="@item.Id">
+				<label> @item.Name</label>
+			</div>
+		}
+	</div>
+</div>
+<div class="col-lg-12">
+	<div class="mb-3" id="vendors">
+		<h4>Thương hiệu</h4>
+		@foreach (var item in Model.Vendors)
+		{
+			<div class="mb-2">
+				<input type="checkbox" class="me-2" name="vendorId" value="@item.Id">
+				<label> @item.Name</label>
+			</div>
+		}
+	</div>
+</div>

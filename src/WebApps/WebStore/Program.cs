@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using WebStore.Data;
 
 namespace WebStore
 {
@@ -41,10 +39,9 @@ namespace WebStore
 
             app.UseAuthorization();
 
-            app.MapAreaControllerRoute(
+            app.MapControllerRoute(
                 name: "default",
-                areaName: "Portal",
-                pattern: "{controller=Products}/{action=Index}/{id?}");
+                pattern: "{controller=Store}/{action=Index}/{id?}");
 
             app.Run();
         }
