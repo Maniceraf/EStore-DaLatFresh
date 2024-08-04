@@ -66,10 +66,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageFiles" class="control-label">Preview Image</label>
-                <input id="fileInput" type="file" asp-for="ImageFiles" multiple />
+                <div style="display:flex; border: 1px solid #ced4da; padding: 5px">
+                    <input id="fileInput" type="file" asp-for="ImageFiles" accept="image/*" multiple />
+                </div>
                 <span asp-validation-for="ImageFiles" class="text-danger"></span>
+                <div id="imagePreview" style="padding: 10px; border-color: #ced4da; border-style: solid; border-width: 1px; border-top-width: 0px;"></div>
             </div>
-            <div id="imagePreview"></div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a type="button" asp-action="Index" class="btn btn-danger ml-2">Back to List</a>
@@ -91,23 +93,32 @@
 
             reader.onload = function (e) {
                 const container = document.createElement('div');
-                container.style.display = 'inline-block';
-                container.style.position = 'relative';
-                container.style.margin = '10px';
+                container.style.display = 'flex';
+                container.style.alignItems = 'center';
+                container.style.border = '1px solid #ccc';
+                container.style.margin = '10px 0';
+                container.style.padding = '10px';
 
                 const img = document.createElement('img');
                 img.src = e.target.result;
-                img.style.width = '200px'; // Set width or other styles as needed
+                img.style.width = '50px'; // Adjust width as needed
+                img.style.height = '50px'; // Adjust height as needed
+                img.style.objectFit = 'cover';
+                img.style.marginRight = '10px';
+
+                const fileInfo = document.createElement('div');
+                const fileName = document.createElement('p');
+                fileName.textContent = `${file.name} - ${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+                fileName.style.margin = '0';
+                fileInfo.appendChild(fileName);
 
                 const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Remove';
-                deleteButton.style.position = 'absolute';
-                deleteButton.style.top = '0';
-                deleteButton.style.right = '0';
-                deleteButton.style.backgroundColor = 'red';
-                deleteButton.style.color = 'white';
+                deleteButton.textContent = 'X';
+                deleteButton.style.marginLeft = 'auto';
+                deleteButton.style.backgroundColor = 'transparent';
                 deleteButton.style.border = 'none';
                 deleteButton.style.cursor = 'pointer';
+                deleteButton.style.fontSize = '16px';
 
                 deleteButton.addEventListener('click', function () {
                     container.remove(); // Remove the image and button container
@@ -116,6 +127,7 @@
                 });
 
                 container.appendChild(img);
+                container.appendChild(fileInfo);
                 container.appendChild(deleteButton);
                 imagePreviewDiv.appendChild(container);
             };
