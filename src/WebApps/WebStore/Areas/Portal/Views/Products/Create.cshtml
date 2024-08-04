@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-6">
@@ -60,23 +60,86 @@
                 <span asp-validation-for="UnitDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PreviewImage" class="control-label">Preview Image</label>
-                <input asp-for="PreviewImage" class="form-control rounded-0" />
-                <span asp-validation-for="PreviewImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Description" class="control-label">Description</label>
                 <input asp-for="Description" class="form-control rounded-0" placeholder="Enter Description" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ImageFile" class="control-label">Preview Image</label>
+                <input id="fileInput" type="file" asp-for="ImageFile" multiple />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div id="imagePreview"></div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a type="button" asp-action="Index" class="btn btn-danger ml-2">Back to List</a>
             </div>
         </form>
-
     </div>
 </div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const imagePreviewDiv = document.getElementById('imagePreview');
+    let allFiles = []; // Array to keep track of all selected files
+
+    function displayImages(files) {
+        const newFiles = Array.from(files);
+
+        newFiles.forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const container = document.createElement('div');
+                container.style.display = 'inline-block';
+                container.style.position = 'relative';
+                container.style.margin = '10px';
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '200px'; // Set width or other styles as needed
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Xóa';
+                deleteButton.style.position = 'absolute';
+                deleteButton.style.top = '0';
+                deleteButton.style.right = '0';
+                deleteButton.style.backgroundColor = 'red';
+                deleteButton.style.color = 'white';
+                deleteButton.style.border = 'none';
+                deleteButton.style.cursor = 'pointer';
+
+                deleteButton.addEventListener('click', function () {
+                    container.remove(); // Remove the image and button container
+                    allFiles = allFiles.filter(f => f !== file); // Remove file from array
+                    updateFileInput();
+                });
+
+                container.appendChild(img);
+                container.appendChild(deleteButton);
+                imagePreviewDiv.appendChild(container);
+
+                allFiles.push(file); // Add to the allFiles array
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function updateFileInput() {
+        const dataTransfer = new DataTransfer();
+        allFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
+
+    fileInput.addEventListener('change', function (event) {
+        displayImages(event.target.files);
+        // Keep the previous files and add new files
+        const newFiles = Array.from(event.target.files);
+        allFiles = [...allFiles, ...newFiles];
+        updateFileInput();
+    });
+</script>
 
 @section Scripts {
     @{

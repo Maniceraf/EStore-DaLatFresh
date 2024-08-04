@@ -2,8 +2,10 @@
 using System.Reflection;
 using WebStore.Data;
 using WebStore.Implements;
+using WebStore.Implements.Services;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Repositories;
+using WebStore.Interfaces.Services;
 
 namespace WebStore
 {
@@ -11,7 +13,7 @@ namespace WebStore
     {
         public static void AddBusinessService(this WebApplicationBuilder builder)
         {
-
+            builder.Services.AddScoped(typeof(IFirebaseStorageService), typeof(FirebaseStorageService));
         }
 
         public static void AddRepositories(this WebApplicationBuilder builder)

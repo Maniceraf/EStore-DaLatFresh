@@ -1,89 +1,85 @@
-﻿@model WebStore.Entities.Product
+﻿@model WebStore.Areas.Portal.Models.Product.EditProductRequestModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Product</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductTypeId" class="control-label">Product Type</label>
+                        <select asp-for="ProductTypeId" class="form-control rounded-0" asp-items="ViewBag.ProductTypeId"></select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="VendorId" class="control-label">Vendor</label>
+                        <select asp-for="VendorId" class="form-control rounded-0" asp-items="ViewBag.VendorId"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Name</label>
+                        <input asp-for="Name" class="form-control rounded-0" placeholder="Enter Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Alias" class="control-label"></label>
+                        <input asp-for="Alias" class="form-control rounded-0" placeholder="Enter Alias" />
+                        <span asp-validation-for="Alias" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label">Price</label>
+                        <input asp-for="Price" class="form-control rounded-0" placeholder="Enter Price" type="number" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Discount" class="control-label">Discount</label>
+                        <input asp-for="Discount" class="form-control rounded-0" placeholder="Enter Discount" type="number" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Alias" class="control-label"></label>
-                <input asp-for="Alias" class="form-control" />
-                <span asp-validation-for="Alias" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitDescription" class="control-label"></label>
-                <input asp-for="UnitDescription" class="form-control" />
+                <label asp-for="UnitDescription" class="control-label">Unit Description</label>
+                <input asp-for="UnitDescription" class="form-control rounded-0" placeholder="Enter Unit Description" />
                 <span asp-validation-for="UnitDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="ImageFile" class="control-label">Preview Image</label>
+                <input type="file" asp-for="ImageFile"/>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PreviewImage" class="control-label"></label>
-                <input asp-for="PreviewImage" class="form-control" />
-                <span asp-validation-for="PreviewImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label"></label>
-                <input asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ViewCounts" class="control-label"></label>
-                <input asp-for="ViewCounts" class="form-control" />
-                <span asp-validation-for="ViewCounts" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label">Description</label>
+                <input asp-for="Description" class="form-control rounded-0" placeholder="Enter Description" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedOnUtc" class="control-label"></label>
-                <input asp-for="CreatedOnUtc" class="form-control" />
-                <span asp-validation-for="CreatedOnUtc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedOnUtc" class="control-label"></label>
-                <input asp-for="UpdatedOnUtc" class="form-control" />
-                <span asp-validation-for="UpdatedOnUtc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductTypeId" class="control-label"></label>
-                <select asp-for="ProductTypeId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="ProductTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VendorId" class="control-label"></label>
-                <select asp-for="VendorId" class="form-control" asp-items="ViewBag.VendorId"></select>
-                <span asp-validation-for="VendorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a type="button" asp-action="Index" class="btn btn-danger ml-2">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

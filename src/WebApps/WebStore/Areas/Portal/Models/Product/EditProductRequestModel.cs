@@ -1,9 +1,8 @@
-﻿using System.Web;
-
-namespace WebStore.Areas.Portal.Models.Product
+﻿namespace WebStore.Areas.Portal.Models.Product
 {
-    public class CreateProductRequestModel
+    public class EditProductRequestModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
 
         public string Alias { get; set; } = null!;
@@ -12,7 +11,7 @@ namespace WebStore.Areas.Portal.Models.Product
 
         public double Price { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         public double Discount { get; set; }
 

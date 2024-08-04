@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 @{
     string menuItem = ViewData["menu"]?.ToString() ?? string.Empty;
 }
@@ -51,14 +51,14 @@
                 <div class="info-box-content">
                     <div class="content-header">
                         @* <div class="container-fluid">
-                            <div class="row mb-2">
-                                <div class="col-sm-12">
-                                    <ol class="breadcrumb float-sm-left">
-                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                        <li class="breadcrumb-item active">@menuItem</li>
-                                    </ol>
-                                </div>
-                            </div>
+                        <div class="row mb-2">
+                        <div class="col-sm-12">
+                        <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">@menuItem</li>
+                        </ol>
+                        </div>
+                        </div>
                         </div> *@
                     </div>
                     <section class="content">
@@ -82,6 +82,7 @@
     <script src="~/portal/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/portal/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="~/portal/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/portal/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="~/portal/dist/js/adminlte.js"></script>
     <script src="~/portal/dist/js/pages/dashboard.js"></script>
     @RenderSection("Scripts", required: false)
