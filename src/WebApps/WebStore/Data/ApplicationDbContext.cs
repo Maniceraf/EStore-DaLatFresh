@@ -20,6 +20,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductImage> ProductImages { get; set; }
+
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public virtual DbSet<Vendor> Vendors { get; set; }
@@ -63,6 +65,22 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.VendorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Product__VendorI__6A30C649");
+        });
+
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductI__3214EC070E2CD3DD");
+
+            entity.ToTable("ProductImage");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductIm__Produ__02FC7413");
         });
 
         modelBuilder.Entity<ProductType>(entity =>

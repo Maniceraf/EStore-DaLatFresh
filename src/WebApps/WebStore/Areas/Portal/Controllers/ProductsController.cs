@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Identity.Client.Extensions.Msal;
 using System.Globalization;
 using WebStore.Areas.Portal.Models.Product;
 using WebStore.Entities;
@@ -75,7 +76,7 @@ namespace WebStore.Areas.Portal.Controllers
         [HttpPost]
         [Route("create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Alias,UnitDescription,Price,Discount,ImageFile,Description,ProductTypeId,VendorId")] CreateProductRequestModel model)
+        public async Task<IActionResult> Create([Bind("Name,Alias,UnitDescription,Price,Discount,ImageFiles,Description,ProductTypeId,VendorId")] CreateProductRequestModel model)
         {
             if (ModelState.IsValid)
             {
@@ -93,15 +94,30 @@ namespace WebStore.Areas.Portal.Controllers
                     VendorId = model.VendorId
                 };
 
-                var extension = Path.GetExtension(model.ImageFile.FileName);
-                var fileName = $"{Guid.NewGuid()}{extension}";
-                var result = await _firebaseStorageService.UploadFileAsync(model.ImageFile, fileName);
-                if (result)
+                await _unitOfWork.ProductRepository.CreateAsync(product);
+                await _unitOfWork.SaveChangesAsync();
+
+                var images = new List<ProductImage>();
+                foreach (var file in model.ImageFiles)
                 {
-                    product.PreviewImage = fileName;
+                    if (file.Length > 0)
+                    {
+                        var extension = Path.GetExtension(file.FileName);
+                        var fileName = $"{Guid.NewGuid()}{extension}";
+                        var result = await _firebaseStorageService.UploadFileAsync(file, fileName);
+                        if (result)
+                        {
+                            images.Add(new ProductImage
+                            {
+                                Name = fileName,
+                                ProductId = product.Id
+                            });
+                            product.PreviewImage = fileName;
+                        }
+                    }
                 }
 
-                await _unitOfWork.ProductRepository.CreateAsync(product);
+                await _unitOfWork.ProductImageRepository.CreateRangeAsync(images);
                 await _unitOfWork.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

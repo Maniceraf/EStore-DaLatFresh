@@ -6,7 +6,7 @@ namespace WebStore.Implements.Services
 {
     public class FirebaseStorageService : IFirebaseStorageService
     {
-        private readonly string _bucketName = "";
+        private readonly string _bucketName = "tracking-app-b5b1f.appspot.com";
         private readonly GoogleCredential _googleCredential;
         public FirebaseStorageService()
         {
