@@ -31,6 +31,8 @@ public partial class Product
 
     public int VendorId { get; set; }
 
+    public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+
     public virtual ProductType ProductType { get; set; } = null!;
 
     public virtual Vendor Vendor { get; set; } = null!;

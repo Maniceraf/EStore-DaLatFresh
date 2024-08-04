@@ -12,7 +12,7 @@ namespace WebStore.Areas.Portal.Models.Product
 
         public double Price { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public IFormFileCollection ImageFiles { get; set; } = null!;
 
         public double Discount { get; set; }
 

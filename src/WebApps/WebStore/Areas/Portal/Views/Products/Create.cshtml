@@ -65,9 +65,9 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label">Preview Image</label>
-                <input id="fileInput" type="file" asp-for="ImageFile" multiple />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                <label asp-for="ImageFiles" class="control-label">Preview Image</label>
+                <input id="fileInput" type="file" asp-for="ImageFiles" multiple />
+                <span asp-validation-for="ImageFiles" class="text-danger"></span>
             </div>
             <div id="imagePreview"></div>
             <div class="form-group">
@@ -100,7 +100,7 @@
                 img.style.width = '200px'; // Set width or other styles as needed
 
                 const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Xóa';
+                deleteButton.textContent = 'Remove';
                 deleteButton.style.position = 'absolute';
                 deleteButton.style.top = '0';
                 deleteButton.style.right = '0';
@@ -118,12 +118,13 @@
                 container.appendChild(img);
                 container.appendChild(deleteButton);
                 imagePreviewDiv.appendChild(container);
-
-                allFiles.push(file); // Add to the allFiles array
             };
 
             reader.readAsDataURL(file);
         });
+
+        allFiles = allFiles.concat(newFiles); // Add new files to the allFiles array
+        updateFileInput();
     }
 
     function updateFileInput() {
@@ -134,10 +135,6 @@
 
     fileInput.addEventListener('change', function (event) {
         displayImages(event.target.files);
-        // Keep the previous files and add new files
-        const newFiles = Array.from(event.target.files);
-        allFiles = [...allFiles, ...newFiles];
-        updateFileInput();
     });
 </script>
 
