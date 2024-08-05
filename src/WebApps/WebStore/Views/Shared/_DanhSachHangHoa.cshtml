@@ -14,22 +14,22 @@
 						<div class="row g-4">
 							@await Component.InvokeAsync("Filter")
 							<div class="col-lg-12">
-								<div class="mb-3">
+								<div class="mb-3" id="price-ranges">
 									<h4>Giá bán</h4>
 									<div class="mb-2">
-										<input type="checkbox" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
+										<input type="radio" class="me-2" id="price1" data-min="0" data-max="100000">
 										<label for="Categories-1"> Dưới 100.000đ</label>
 									</div>
 									<div class="mb-2">
-										<input type="checkbox" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
+										<input type="radio" class="me-2" id="price2" data-min="100000" data-max="300000">
 										<label for="Categories-2"> 100.000đ đến 300.000đ</label>
 									</div>
 									<div class="mb-2">
-										<input type="checkbox" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
+										<input type="radio" class="me-2" id="price3" data-min="300000" data-max="500000">
 										<label for="Categories-3"> 300.000đ đến 500.000đ</label>
 									</div>
 									<div class="mb-2">
-										<input type="checkbox" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
+										<input type="radio" class="me-2" id="price4" data-min="500000" data-max="100000000">
 										<label for="Categories-4"> Trên 500.000đ</label>
 									</div>
 								</div>
@@ -49,7 +49,9 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		const ccheckboxes = document.querySelectorAll('#categories input[type="checkbox"]');
-		const vcheckboxes = document.querySelectorAll('#vendors input[type="checkbox"]')
+		const vcheckboxes = document.querySelectorAll('#vendors input[type="checkbox"]');
+		const radioButtons = document.querySelectorAll('#price-ranges input[type="radio"]');
+		let lastChecked = null;
 
 		const urlParams = new URLSearchParams(window.location.search);
 
@@ -58,6 +60,13 @@
 
 		// Initialize vendorIds from URL params if available
 		let vendorIds = urlParams.getAll('vendorId').map(Number);
+
+		// Initialize minPrice and maxPrice from URL params if available
+		let selectedMinPrice = urlParams.get('minPrice');
+		let selectedMaxPrice = urlParams.get('maxPrice');
+
+		console.log(selectedMinPrice);
+		console.log(selectedMaxPrice);
 
 		ccheckboxes.forEach(checkbox => {
 			// Set the checkbox state based on categoryIds
@@ -76,8 +85,7 @@
 					// Remove from categoryIds if unchecked
 					categoryIds = categoryIds.filter(id => id !== value);
 				}
-
-				loadViewWithParams(categoryIds, vendorIds);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice);
 			});
 		});
 		vcheckboxes.forEach(checkbox => {
@@ -97,13 +105,33 @@
 					// Remove from vendorIds if unchecked
 					vendorIds = vendorIds.filter(id => id !== value);
 				}
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice);
+			});
+		});
+		radioButtons.forEach(radio => {
+			// Set the radio button state based on minPrice and maxPrice
+			if (radio.dataset.min === selectedMinPrice && radio.dataset.max === selectedMaxPrice) {
+				radio.checked = true;
+				lastChecked = radio;
+			}
 
-				loadViewWithParams(categoryIds, vendorIds);
+			radio.addEventListener('change', function () {
+				if (radio === lastChecked) {
+					radio.checked = false;
+					lastChecked = null;
+					loadViewWithParams(categoryIds, vendorIds, null, null);
+				} else {
+					lastChecked = radio;
+					const minPrice = radio.dataset.min;
+					const maxPrice = radio.dataset.max;
+					loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice);
+				}
 			});
 		});
 	});
 
-	function loadViewWithParams(categoryIds, vendorIds) {
+	function loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice)
+	{
 		const url = new URL(window.location.href);
 		url.search = ''; // Clear existing query params
 
@@ -114,6 +142,11 @@
 		vendorIds.forEach(id => {
 			url.searchParams.append('vendorId', id);
 		});
+
+		if (minPrice != null && maxPrice != null) {
+			url.searchParams.set('minPrice', minPrice);
+			url.searchParams.set('maxPrice', maxPrice);
+		}
 
 		window.location.href = url.toString();
 	}

@@ -23,16 +23,21 @@ namespace WebStore.Controllers
 
 		[HttpGet]
 		[Route("products")]
-        public IActionResult Products(List<int> categoryId, List<int> vendorId)
+        public IActionResult Products(List<int> categoryId, List<int> vendorId, int? minPrice, int? maxPrice)
         {
             var products = _unitOfWork.ProductRepository.GetAll();
 
-            if (categoryId.Count > 0)
+            if (categoryId.Count > 0 || vendorId.Count > 0)
             {
                 products = products.Where(p => 
-					categoryId.Contains(p.ProductType.CategoryId)
-					&& vendorId.Contains(p.VendorId)).ToList();
+					(categoryId.Count == 0 || categoryId.Contains(p.ProductType.CategoryId)
+					&& (vendorId.Count == 0 || vendorId.Contains(p.VendorId)))).ToList();
             }
+
+			if (minPrice.HasValue && maxPrice.HasValue)
+			{
+				products = products.Where(x => x.Price >= minPrice.Value && x.Price < maxPrice.Value).ToList();
+			}
 
             var result = products.OrderByDescending(x => x.CreatedOnUtc).Select(x =>
             {
