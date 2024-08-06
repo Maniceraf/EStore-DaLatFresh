@@ -51,6 +51,11 @@
 		const ccheckboxes = document.querySelectorAll('#categories input[type="checkbox"]');
 		const vcheckboxes = document.querySelectorAll('#vendors input[type="checkbox"]');
 		const radioButtons = document.querySelectorAll('#price-ranges input[type="radio"]');
+		const button1 = document.getElementById("button1");
+		const button2 = document.getElementById("button2");
+		const dropdownButton = document.querySelector('.dropdown-button');
+		var items = document.querySelectorAll('.dropdown-content a');
+
 		let lastChecked = null;
 
 		const urlParams = new URLSearchParams(window.location.search);
@@ -64,9 +69,66 @@
 		// Initialize minPrice and maxPrice from URL params if available
 		let selectedMinPrice = urlParams.get('minPrice');
 		let selectedMaxPrice = urlParams.get('maxPrice');
+		let sort = urlParams.get('sortByPrice') ?? 'asc';
+		let length = urlParams.get('length') ?? 10;
 
-		console.log(selectedMinPrice);
-		console.log(selectedMaxPrice);
+		if (sort === 'desc') {
+			sort = 'desc';
+			button2.style.border = "1px solid red";
+			button2.style.fontWeight = "bold";
+			button2.style.color = "red";
+		}
+		else {
+			sort = 'asc';
+			button1.style.border = "1px solid red";
+			button1.style.fontWeight = "bold";
+			button1.style.color = "red";
+		}
+
+		dropdownButton.textContent = `Hiển thị ${length}`;
+
+		items.forEach(item => {
+			item.addEventListener('click', event => {
+				event.preventDefault();
+				length = item.dataset.value;
+				dropdownButton.textContent = `${item.textContent}`;
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+			});
+			console.log(length);
+			console.log(item.dataset.value);
+			if (length == item.dataset.value) {
+				console.log(length);
+
+				item.style.backgroundColor = "gray";
+				item.style.pointerEvents = "none";
+			}
+		});
+
+		button1.addEventListener('click', function () {
+			if (sort !== 'asc') {
+				sort = 'asc';
+				button1.style.border = "1px solid red";
+				button1.style.fontWeight = "bold";
+				button1.style.color = "red";
+				button2.style.border = "1px solid black";
+				button2.style.fontWeight = "regular";
+				button2.style.color = "black";
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+			}
+		});
+
+		button2.addEventListener('click', function () {
+			if (sort !== 'desc') {
+				sort = 'desc';
+				button1.style.border = "1px solid black";
+				button1.style.fontWeight = "regular";
+				button1.style.color = "black";
+				button2.style.border = "1px solid red";
+				button2.style.fontWeight = "bold";
+				button2.style.color = "red";
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length)
+			}
+		});
 
 		ccheckboxes.forEach(checkbox => {
 			// Set the checkbox state based on categoryIds
@@ -85,7 +147,7 @@
 					// Remove from categoryIds if unchecked
 					categoryIds = categoryIds.filter(id => id !== value);
 				}
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
 			});
 		});
 		vcheckboxes.forEach(checkbox => {
@@ -105,7 +167,7 @@
 					// Remove from vendorIds if unchecked
 					vendorIds = vendorIds.filter(id => id !== value);
 				}
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
 			});
 		});
 		radioButtons.forEach(radio => {
@@ -124,14 +186,13 @@
 					lastChecked = radio;
 					const minPrice = radio.dataset.min;
 					const maxPrice = radio.dataset.max;
-					loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice);
+					loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length);
 				}
 			});
 		});
 	});
 
-	function loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice)
-	{
+	function loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length) {
 		const url = new URL(window.location.href);
 		url.search = ''; // Clear existing query params
 
@@ -147,6 +208,9 @@
 			url.searchParams.set('minPrice', minPrice);
 			url.searchParams.set('maxPrice', maxPrice);
 		}
+
+		url.searchParams.set('sortByPrice', sort);
+		url.searchParams.set('length', length);
 
 		window.location.href = url.toString();
 	}

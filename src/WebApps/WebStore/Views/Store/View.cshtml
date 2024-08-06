@@ -35,17 +35,76 @@
     .product-count {
         margin-top: 10px;
     }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-button {
+        background-color: white;
+        color: black;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+        .dropdown-button:after {
+            content: '▼';
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropdown-button {
+        background-color: #f1f1f1;
+    }
 </style>
 <div class="container1">
         <div class="header1">
             <h1>Tất cả sản phẩm</h1>
             <div class="sort-options">
                 <span>Sắp xếp theo</span>
-                <div class="button">Giá tăng</div>
-                <div class="button active">Giá giảm</div>
+                <div class="button" id="button1">Giá tăng</div>
+                <div class="button" id="button2">Giá giảm</div>
             </div>
         </div>
         <div class="product-count">
+            <div class="dropdown">
+                <button class="dropdown-button"></button>
+                <div class="dropdown-content">
+                <a data-value="10" href="#">Hiển thị 10</a>
+                <a data-value="20" href="#">Hiển thị 20</a>
+                <a data-value="30" href="#">Hiển thị 30</a>
+                <a data-value="40" href="#">Hiển thị 40</a>
+                </div>
+            </div>
             Tổng <strong>@Model.Count()</strong> sản phẩm
         </div>
     </div>
@@ -65,7 +124,7 @@
                     <a asp-action="Detail" asp-controller="Store" asp-route-id="@item.Id"><h4>@item.Name</h4></a>
                     <p>@item.Description</p>
                     <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$@item.Price</p>
+                        <p class="text-dark fs-5 fw-bold mb-0">@item.Price đ</p>
                         <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.Id" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Đưa vào giỏ</a>
                     </div>
                 </div>
@@ -101,3 +160,6 @@ else
         </svg>
     </div>
 }
+<script>
+    
+</script>
