@@ -2,10 +2,8 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width" />
-	<title>@ViewBag.Title</title>
+	<title>Đặc Sản Đà Lạt - Mua Hàng Online - Ship Toàn Quốc</title>
 	<meta charset="utf-8">
-	<meta content="" name="keywords">
-	<meta content="" name="description">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
@@ -22,8 +20,8 @@
 		<div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 			<div class="spinner-grow text-primary" role="status"></div>
 		</div>
-		<div class="container-fluid fixed-top">
-			<div class="container topbar bg-primary d-none d-lg-block">
+		<div class="fixed-top">
+			<div class="bg-primary d-none d-lg-block" style="padding: 15px">
 				<div class="d-flex justify-content-between">
 					<div class="top-info ps-2">
 						<small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
@@ -45,9 +43,9 @@
 					<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 						<div class="navbar-nav mx-auto">
 							<a asp-controller="Store" asp-action="Products" class="nav-item nav-link">Sản Phẩm</a>
-							<a href="contact.html" class="nav-item nav-link">Cửa Hàng</a>
-							<a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
-							<a href="contact.html" class="nav-item nav-link">Tin Tức</a>
+							<a href="#" class="nav-item nav-link">Cửa Hàng</a>
+							<a href="#" class="nav-item nav-link">Liên Hệ</a>
+							<a href="#" class="nav-item nav-link">Tin Tức</a>
 						</div>
 						<div class="d-flex m-3 me-0">
 							<button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -60,12 +58,10 @@
 				</nav>
 			</div>
 		</div>
-
 		<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-fullscreen">
 				<div class="modal-content rounded-0">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body d-flex align-items-center">
@@ -94,13 +90,5 @@
 	<script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="~/js/main.js"></script>
 	@RenderSection("Scripts", required: false)
-	<script>
-		$(document).ready(function () {
-			$("#seachButton").click(function () {
-				let url = `/Store/Search?query=` + $("#searchText").val();
-				window.location.href = url;
-			});
-		});
-	</script>
 </body>
 </html>

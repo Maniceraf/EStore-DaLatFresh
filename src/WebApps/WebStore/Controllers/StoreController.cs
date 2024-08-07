@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
@@ -24,11 +25,16 @@ namespace WebStore.Controllers
 
 		[HttpGet]
 		[Route("products")]
-        public IActionResult Products(List<int> categoryId, List<int> vendorId, int? minPrice, int? maxPrice, int length = 10, string sortByPrice = "asc")
+        public IActionResult Products(string search, List<int> categoryId, List<int> vendorId, int? minPrice, int? maxPrice, int length = 10, string sortByPrice = "asc")
         {
             var products = _unitOfWork.ProductRepository.GetAll();
 
-            if (categoryId.Count > 0 || vendorId.Count > 0)
+			if (!search.IsNullOrEmpty())
+			{
+				products = products.Where(p => p.Name.Contains(search)).ToList();
+			}
+
+			if (categoryId.Count > 0 || vendorId.Count > 0)
             {
                 products = products.Where(p => 
 					(categoryId.Count == 0 || categoryId.Contains(p.ProductType.CategoryId)

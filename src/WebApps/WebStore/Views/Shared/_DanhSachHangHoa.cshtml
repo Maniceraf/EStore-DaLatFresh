@@ -5,12 +5,12 @@
 @RenderSection("BreadCum", required: false)
 
 <div class="container-fluid fruite py-5">
-	<div class="container py-5">
+	<div class="container py-5" style="max-width:90% !important">
 		<div class="row g-4">
 			<div class="col-lg-12">
 				<div class="row g-4">
 					<div class="col-lg-3">
-						<h3>Bộ Lọc Nâng Cao</h3>
+						<h3 class="pb-3">Bộ Lọc Nâng Cao</h3>
 						<div class="row g-4">
 							@await Component.InvokeAsync("Filter")
 							<div class="col-lg-12">
@@ -54,7 +54,12 @@
 		const button1 = document.getElementById("button1");
 		const button2 = document.getElementById("button2");
 		const dropdownButton = document.querySelector('.dropdown-button');
+		const searchButton = document.getElementById("seachButton");
+		const searchText = document.getElementById("searchText");
+
 		var items = document.querySelectorAll('.dropdown-content a');
+
+		console.log(searchButton);
 
 		let lastChecked = null;
 
@@ -71,6 +76,7 @@
 		let selectedMaxPrice = urlParams.get('maxPrice');
 		let sort = urlParams.get('sortByPrice') ?? 'asc';
 		let length = urlParams.get('length') ?? 10;
+		let search = urlParams.get('search');
 
 		if (sort === 'desc') {
 			sort = 'desc';
@@ -86,13 +92,14 @@
 		}
 
 		dropdownButton.textContent = `Hiển thị ${length}`;
+		searchText.value = search;
 
 		items.forEach(item => {
 			item.addEventListener('click', event => {
 				event.preventDefault();
 				length = item.dataset.value;
 				dropdownButton.textContent = `${item.textContent}`;
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search);
 			});
 			console.log(length);
 			console.log(item.dataset.value);
@@ -113,7 +120,7 @@
 				button2.style.border = "1px solid black";
 				button2.style.fontWeight = "regular";
 				button2.style.color = "black";
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search);
 			}
 		});
 
@@ -126,8 +133,13 @@
 				button2.style.border = "1px solid red";
 				button2.style.fontWeight = "bold";
 				button2.style.color = "red";
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length)
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search)
 			}
+		});
+
+		searchButton.addEventListener('click', function () {
+			search = searchText.value;
+			loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search)
 		});
 
 		ccheckboxes.forEach(checkbox => {
@@ -147,7 +159,7 @@
 					// Remove from categoryIds if unchecked
 					categoryIds = categoryIds.filter(id => id !== value);
 				}
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search);
 			});
 		});
 		vcheckboxes.forEach(checkbox => {
@@ -167,7 +179,7 @@
 					// Remove from vendorIds if unchecked
 					vendorIds = vendorIds.filter(id => id !== value);
 				}
-				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length);
+				loadViewWithParams(categoryIds, vendorIds, selectedMinPrice, selectedMaxPrice, sort, length, search);
 			});
 		});
 		radioButtons.forEach(radio => {
@@ -186,15 +198,19 @@
 					lastChecked = radio;
 					const minPrice = radio.dataset.min;
 					const maxPrice = radio.dataset.max;
-					loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length);
+					loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length, search);
 				}
 			});
 		});
 	});
 
-	function loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length) {
+	function loadViewWithParams(categoryIds, vendorIds, minPrice, maxPrice, sort, length, search) {
 		const url = new URL(window.location.href);
 		url.search = ''; // Clear existing query params
+
+		if (search != null && search != '') {
+			url.searchParams.set('search', search);
+		}
 
 		categoryIds.forEach(id => {
 			url.searchParams.append('categoryId', id);
