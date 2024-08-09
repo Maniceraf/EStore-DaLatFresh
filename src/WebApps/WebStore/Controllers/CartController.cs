@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using WebStore.Helpers;
 using WebStore.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.ValueObjects;
 using WebStore.ViewModels;
 
@@ -9,20 +11,34 @@ namespace WebStore.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IFirebaseStorageService _firebaseStorageService;
         public List<CartItemViewModel> Cart => HttpContext.Session.Get<List<CartItemViewModel>>(Globals.CART_KEY) ?? new List<CartItemViewModel>();
 
-        public CartController(IUnitOfWork unitOfWork) 
+        public CartController(IUnitOfWork unitOfWork, IFirebaseStorageService firebaseStorageService) 
         {
             _unitOfWork = unitOfWork;
+            _firebaseStorageService = firebaseStorageService;
         }
 
-        [HttpGet]
-        public IActionResult Index()
+		[HttpGet]
+		public IActionResult Index()
         {
-            return View(Cart);
+			var result = Cart.Select(x => 
+			{
+				var a = _firebaseStorageService.GetSignedUrlAsync(x.PreviewImage ?? string.Empty).Result;
+                return new CartItemViewModel
+                {
+                    ProductId = x.ProductId,
+                    ProductName = x.ProductName,
+                    PreviewImage = a,
+                    Count = x.Count,
+                    Price = x.Price,
+				};
+			}).ToList();
+            return View(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult AddToCart(int id, int quantity = 1)
         {
             var cart = Cart;
